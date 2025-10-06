@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+
+/** Preload all lessons for the sidebar */
+const allLessons = await getCollection("lessons");
+
+// Group lessons by category
+const lessonsByCategory = allLessons.reduce((acc, l) => {
+  const cat = l.data.category ?? "Uncategorized";
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(l);
+  return acc;
+}, {});
+---
+
+<style>
+.sidebar {
+  width: 260px;
+  padding: 1rem;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--fg);
+  text-transform: uppercase;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+  color: var(--link-hover);
+}
+
+#theme-toggle {
+  display: block;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: var(--link);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#theme-toggle:hover {
+  background: var(--link-hover);
+}
+</style>
+
+<aside class="sidebar">
+  <button id="theme-toggle">Toggle Theme</button>
+
+  {Object.keys(lessonsByCategory).sort().map(cat => (
+    <>
+      <h3>{cat}</h3>
+      <ul>
+        {lessonsByCategory[cat].map(l => {
+          const path = String(l.id)
+  .replace(/^\/+/, "")  // remove leading slash
+  .replace(/\.md$/, ""); // remove .md
+
+          return (
+            <li>
+              <a href={`/lessons/${path}`}>{l.data.title}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  ))}
+</aside>
+
+<script client:load>
+  const toggleBtn = document.getElementById('theme-toggle');
+  toggleBtn.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', current);
+    localStorage.setItem('theme', current);
+  });
+  
+</script>
+

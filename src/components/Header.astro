@@ -1,0 +1,56 @@
+---
+const brand = "LearnCode";
+---
+<header class="sticky top-0 z-50 bg-white/60 backdrop-blur-md dark:bg-slate-900/60 border-b">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-14">
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-md bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow">
+            LC
+          </div>
+          <div>
+            <div class="text-lg font-semibold text-slate-900 dark:text-slate-50">{brand}</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 -mt-0.5">Interactive coding lessons</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/lessons" class="hidden sm:inline-block text-sm px-3 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800">Lessons</a>
+
+        <button id="theme-toggle" class="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Toggle dark mode">
+          <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700 dark:text-slate-200" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a.75.75 0 01.743.648l.007.102V4a.75.75 0 01-1.493.102L9.25 4V2.75A.75.75 0 0110 2zM10 16a.75.75 0 01.743.648l.007.102V18a.75.75 0 01-1.493.102L9.25 18v-1.25A.75.75 0 0110 16zM4.22 4.22a.75.75 0 011.06 1.06L4.78 5.78A.75.75 0 013.72 4.72l.5-.5zM15.78 15.78a.75.75 0 011.06 1.06l-0.5.5a.75.75 0 11-1.06-1.06zM2 10a.75.75 0 01.648.743L2.75 10.75H4a.75.75 0 01.102 1.493L4 12H2.75A.75.75 0 012 11.25V10zM16 10a.75.75 0 01.648.743L16.75 10.75H18a.75.75 0 01.102 1.493L18 12h-1.25A.75.75 0 0116 11.25V10zM4.22 15.78a.75.75 0 011.06-1.06l.5.5a.75.75 0 11-1.06 1.06l-.5-.5zM15.78 4.22a.75.75 0 011.06-1.06l.5.5a.75.75 0 11-1.06 1.06l-.5-.5zM10 6.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script client:load>
+    // Apply saved theme on load and toggle on click
+    (function () {
+      const stored = localStorage.getItem("theme");
+      const html = document.documentElement;
+      if (stored === "dark") html.classList.add("dark");
+      else if (stored === "light") html.classList.remove("dark");
+      // else keep system/default
+
+      const toggle = document.getElementById("theme-toggle");
+      const icon = document.getElementById("theme-icon");
+
+      function updateIcon() {
+        const isDark = document.documentElement.classList.contains("dark");
+        // simple icon color change; could swap svg paths for sun/moon
+        icon.style.opacity = isDark ? "1" : "0.9";
+      }
+      updateIcon();
+
+      toggle?.addEventListener("click", () => {
+        html.classList.toggle("dark");
+        const nowDark = html.classList.contains("dark");
+        localStorage.setItem("theme", nowDark ? "dark" : "light");
+        updateIcon();
+      });
+    })();
+  </script>
+</header>

@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import Quiz from "../../components/Quiz.astro";
+import LiveHTML from "../../components/LiveHTML.astro";
+import LivePython from "../../components/LivePython.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import "../../styles/global.css";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  return lessons.map((lesson) => {
+    const id = String(lesson.id).replace(/\.md$/, "").replace(/^\/+|\/+$/g, "");
+    return { params: { slug: id }, props: { lesson } };
+  });
+}
+
+const { lesson } = Astro.props;
+const { Content } = await lesson.render();
+---
+
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --sidebar-bg: #f7f7f7;
+  --sidebar-border: #e5e7eb;
+  --link: #0366d6;
+  --link-hover: #024ea2;
+}
+
+html[data-theme='dark'] {
+  --bg: #111111;
+  --fg: #f7f7f7;
+  --sidebar-bg: #1a1a1a;
+  --sidebar-border: #333333;
+  --link: #58a6ff;
+  --link-hover: #1f6feb;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+</style>
+<head>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <body>
+
+    <div class="layout">
+      <Sidebar />
+      
+      <main class="content">
+        <h1>{lesson.data.title}</h1>
+        <p>{lesson.data.description}</p>
+        
+        <Content />
+        
+        {lesson.data.playground === 'html' && <LiveHTML initialCode={lesson.data.example ?? undefined} />}
+        {lesson.data.playground === 'python' && <LivePython initialCode={lesson.data.example ?? undefined} />}
+        
+        {lesson.data.quiz && <Quiz questions={lesson.data.quiz} />}
+      </main>
+    </div>
+    
+  </body>
+</head>

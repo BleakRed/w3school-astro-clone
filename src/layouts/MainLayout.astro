@@ -1,0 +1,20 @@
+---
+import Header from "../components/Header.astro";
+const { title = "LearnCode" } = Astro.props;
+
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title} — LearnCode</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+  </head>
+  <body class="min-h-screen antialiased">
+    <Header />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <slot />
+    </main>
+  </body>
+</html>

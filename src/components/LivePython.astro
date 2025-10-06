@@ -1,0 +1,44 @@
+---
+const { initialCode = "print('Hello, Python!')" } = Astro.props;
+---
+<div class="bg-white shadow-sm rounded-md p-4 dark:bg-slate-800">
+  <div class="flex items-center justify-between mb-3">
+    <h4 class="text-sm font-semibold">Try it — Python</h4>
+    <button id="run-py" class="text-sm px-3 py-1 rounded bg-emerald-600 text-white hover:bg-emerald-700">Run</button>
+  </div>
+
+  <textarea id="py-editor" class="w-full h-44 p-3 rounded border font-mono text-sm dark:bg-slate-900 dark:border-slate-700" spellcheck="false">{initialCode}</textarea>
+  <pre id="py-output" class="mt-3 p-3 rounded bg-slate-50 dark:bg-slate-900 text-sm overflow-auto"></pre>
+</div>
+
+<script type="module" client:load>
+  // simple Pyodide loader
+  async function loadPyodideOnce() {
+    if (window._pyodide) return window._pyodide;
+    // eslint-disable-next-line no-undef
+    window._pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/" });
+    return window._pyodide;
+  }
+
+  const runBtn = document.getElementById("run-py");
+  const editor = document.getElementById("py-editor");
+  const output = document.getElementById("py-output");
+
+  runBtn?.addEventListener("click", async () => {
+    output.textContent = "Loading Python runtime…";
+    try {
+      const py = await loadPyodideOnce();
+      try {
+        const res = await py.runPythonAsync(editor.value);
+        output.textContent = (res === undefined || res === null) ? "" : String(res);
+      } catch (err) {
+        output.textContent = String(err);
+      }
+    } catch (err) {
+      output.textContent = "Failed to load Python runtime.";
+      console.error(err);
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" defer></script>

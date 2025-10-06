@@ -1,0 +1,75 @@
+LearnCode - W3Schools-style Learning Platform
+=============================================
+
+PROJECT STRUCTURE:
+------------------
+src/
+├── content/
+│   ├── config.ts                      # Content collections schema
+│   └── lessons/
+│       ├── html/                      # HTML lessons
+│       │   ├── introduction.md
+│       │   ├── elements.md
+│       │   └── attributes.md
+│       └── python/                    # Python lessons
+│           ├── introduction.md
+│           ├── variables.md
+│           └── data-types.md
+├── components/
+│   ├── Header.astro                   # Top navigation with logo & dark mode
+│   ├── Sidebar.astro                  # Collapsible category navigation
+│   ├── HTMLPlayground.astro           # Live HTML/CSS/JS editor
+│   └── PythonPlayground.astro         # Browser-based Python executor
+├── layouts/
+│   └── MainLayout.astro               # Base layout with dark mode
+├── pages/
+│   ├── index.astro                    # Homepage
+│   └── lessons/
+│       └── [...slug].astro            # Dynamic lesson pages
+└── styles/
+    └── global.css                     # Global styles & prose formatting
+
+FEATURES IMPLEMENTED:
+---------------------
+✓ Astro.js with TailwindCSS
+✓ Sticky header with "LearnCode" branding
+✓ Collapsible sidebar navigation (auto-generated from markdown)
+✓ Dark mode toggle with localStorage persistence
+✓ Content collections for lessons (Markdown-based)
+✓ HTML Playground with live preview
+✓ Python Playground with Pyodide (browser-based execution)
+✓ Previous/Next lesson navigation
+✓ Responsive design (mobile & desktop)
+✓ Clean, modern W3Schools-inspired design
+
+HOW TO ADD NEW LESSONS:
+------------------------
+1. Create a new .md file in src/content/lessons/{category}/
+2. Add frontmatter with:
+   - title: "Lesson Title"
+   - description: "Brief description"
+   - category: "HTML" or "Python" (or new category)
+   - order: 1, 2, 3... (determines sequence)
+   - playground: "html", "python", or "none"
+3. Write lesson content in Markdown
+4. Sidebar will automatically update!
+
+HOW TO ADD NEW CATEGORIES:
+---------------------------
+Simply create a new folder in src/content/lessons/ and add lessons.
+The sidebar will auto-detect and display the new category.
+
+To add custom playground support for new languages:
+1. Create a new component (e.g., JavaScriptPlayground.astro)
+2. Update content/config.ts to include the new playground type
+3. Reference it in lessons/[...slug].astro
+
+KEYBOARD SHORTCUTS:
+-------------------
+- Ctrl/Cmd + Enter: Run code in playgrounds
+
+COMMANDS:
+---------
+npm run dev     # Start development server
+npm run build   # Build for production
+npm run preview # Preview production build

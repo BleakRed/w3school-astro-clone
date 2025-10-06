@@ -1,0 +1,39 @@
+---
+const { initialCode = "<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello World</h1>\n  </body>\n</html>" } = Astro.props;
+---
+<div class="bg-white shadow-sm rounded-md p-4 dark:bg-slate-800">
+  <div class="flex items-center justify-between mb-3">
+    <h4 class="text-sm font-semibold">Try it — HTML</h4>
+    <button id="run-html" class="text-sm px-3 py-1 rounded bg-sky-600 text-white hover:bg-sky-700">Run</button>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+    <textarea id="html-editor" class="w-full h-56 p-3 rounded border resize-none font-mono text-sm dark:bg-slate-900 dark:border-slate-700" spellcheck="false">{initialCode}</textarea>
+    <iframe id="html-preview" class="w-full h-56 border rounded bg-white dark:bg-slate-900"></iframe>
+  </div>
+</div>
+
+<script client:load>
+  const editor = document.getElementById("html-editor");
+  const preview = document.getElementById("html-preview");
+  const run = document.getElementById("run-html");
+
+  function updatePreview() {
+    if (!preview) return;
+    const doc = preview.contentDocument || preview.contentWindow.document;
+    doc.open();
+    doc.write(editor.value);
+    doc.close();
+  }
+
+  run?.addEventListener("click", updatePreview);
+  // live-preview while typing (debounced)
+  let t;
+  editor?.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(updatePreview, 300);
+  });
+
+  // initialize
+  updatePreview();
+</script>
