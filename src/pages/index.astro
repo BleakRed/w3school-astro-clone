@@ -1,14 +1,26 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import "../styles/global.css";
+import Sidebar from "../components/Sidebar.astro";
 ---
 
-<MainLayout>
-  <div class="text-center py-20">
-    <h1 class="text-4xl font-bold">Welcome to LearnCode</h1>
-    <p class="mt-4">A W3Schools-inspired platform to learn HTML & Python interactively.</p>
-    <a href="/lessons/html/introduction" class="mt-6 inline-block px-6 py-3 bg-blue-500 text-white rounded">
-      Start Learning
-    </a>
-  </div>
-</MainLayout>
+<head>
+ <link rel="stylesheet" href="../styles/global.css" />
+   <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+</head>
+<body>
+  <MainLayout>
+    <div class="text-center py-20">
+      <h1 class="text-4xl font-bold">Welcome to LearnCode</h1>
+      <p class="mt-4">A W3Schools-inspired platform to learn HTML & Python interactively.</p>
+      <a href="/lessons/html/introduction" class="mt-6 inline-block px-6 py-3 bg-blue-500 text-white rounded">
+        Start Learning
+      </a>
+    </div>
+  </MainLayout>
+  
+</body>

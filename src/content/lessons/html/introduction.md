@@ -4,9 +4,9 @@ description: "Learn the basics of HTML structure and tags."
 category: "html"
 order: 1
 quiz:
-  - question: "Which tag is used for a paragraph?"
-    options: ["<div>", "<p>", "<span>", "<a>"]
-    answer: 1
+  - question: "What does HTML stand for?"
+    options: ["Hyper Text Markup Language", "Home Tool Markup Language", "Hyperlinks and Text Markup Language"]
+    answer: 0
 ---
 
 # HTML Basics
